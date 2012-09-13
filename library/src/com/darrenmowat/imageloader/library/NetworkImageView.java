@@ -14,8 +14,6 @@ import com.squareup.otto.Subscribe;
 
 public class NetworkImageView extends CacheableImageView {
 
-	private static final String Tag = "NetworkImageView";
-
 	private static int loadingDrawableId;
 	private static int loadingFailedDrawableId;
 

@@ -10,6 +10,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -17,10 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.joda.time.DateTime;
-
 import uk.co.senab.bitmapcache.CacheableBitmapWrapper;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -34,7 +33,6 @@ import com.darrenmowat.imageloader.library.events.LoadImageEvent;
 import com.darrenmowat.imageloader.library.events.PurgeImageViewEvent;
 import com.squareup.otto.Subscribe;
 
-@SuppressLint("UseSparseArrays")
 public class ImageLoader {
 
 	private String Tag = "ImageLoader";
@@ -243,11 +241,13 @@ public class ImageLoader {
 						}
 					}
 				} else {
-					DateTime delete = new DateTime(System.currentTimeMillis()).minusDays(2);
+					Calendar delete = Calendar.getInstance();
+					delete.add(Calendar.DAY_OF_MONTH, -2);
+					long del = delete.getTimeInMillis();
 					for (File f : files) {
 						if (f != null) {
-							DateTime lmod = new DateTime(f.lastModified());
-							if (delete.isAfter(lmod.getMillis())) {
+							Date lmod = new Date(f.lastModified());
+							if (del > lmod.getTime()) {
 								if (f.delete()) {
 									Log.v(Tag, "Deleted " + f.getAbsolutePath());
 								}
