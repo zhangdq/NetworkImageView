@@ -5,4 +5,6 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_demo">DemoActivity</string>
 
+    <string name="menu_clear">Clear Cache</string>
+    <string name="menu_clean_old">Clean Old Files</string>
 </resources>

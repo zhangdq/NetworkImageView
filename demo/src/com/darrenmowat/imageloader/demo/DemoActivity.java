@@ -21,36 +21,42 @@ import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.darrenmowat.imageloader.library.ImageLoader;
 import com.darrenmowat.imageloadersample.R;
 
 public class DemoActivity extends ListActivity {
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_demo);
-        // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        new PugListAsyncTask().execute();
-    }
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_demo);
+		// getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		new PugListAsyncTask().execute();
+	}
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_demo, menu);
-        return true;
-    }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.activity_demo, menu);
+		return true;
+	}
 
-    
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-    
-    private class PugListAsyncTask extends AsyncTask<Void, Void, ArrayList<String>> {
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
+		case R.id.menu_clear:
+			ImageLoader.getInstance().clearCache(this);
+			return true;
+		case R.id.menu_clean_old:
+			ImageLoader.getInstance().cleanCache(this);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	private class PugListAsyncTask extends AsyncTask<Void, Void, ArrayList<String>> {
 
 		static final String PUG_ME_URL = "http://pugme.herokuapp.com/bomb?count=" + 30;
 
@@ -84,9 +90,9 @@ public class DemoActivity extends ListActivity {
 				pugUrls.addAll(pugUrls);
 				pugUrls.addAll(pugUrls);
 				pugUrls.addAll(pugUrls);
-				
+
 				Collections.shuffle(pugUrls);
-				
+
 				return pugUrls;
 
 			} catch (MalformedURLException e) {
