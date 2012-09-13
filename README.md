@@ -84,12 +84,8 @@ The code in this project is licensed under the Apache Software License 2.0.
 Contributing
 ------------
 
-1. Fork it.
-2. Create a branch (`git checkout -b my_imageloader`)
-3. Commit your changes (`git commit -am "Fixed something"`)
-4. Push to the branch (`git push origin my_imageloader`)
-5. Create an [Issue][1] with a link to your branch
-6. Enjoy a refreshing Diet Coke and wait
+I'm open to any suggestions and pull requests. 
+
 
 [1]: https://github.com/DarrenMowat/NetworkImageView/issues
 [2]: https://github.com/chrisbanes/Android-BitmapMemoryCache
