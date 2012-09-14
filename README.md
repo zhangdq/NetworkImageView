@@ -16,7 +16,8 @@ Usage
 -----
 
 Download the NetworkImageView [jar][4] and add it to your libs folder. 
-NetworkImageView depends on Otto by Square, a message bus which allows diffrent parts of NetworkImageView to communicate. Download the Otto [jar][5] and add it to your libs folder. 
+NetworkImageView depends on Otto by Square, a message bus which allows diffrent parts of NetworkImageView to communicate. Download the Otto [jar][5] and add it to your libs folder. You should use v1.2.1 as CallbackNetworkImageView doesn't work with v1.3.0 yet.
+
 
 First set the default loading & failed drawables that ImageLoader should use. This should be done once when your application starts (i.e. In your Application class):
 
@@ -71,7 +72,6 @@ and then run the rest of my notification code when imageAvailable is called.
 Note: The bitmap returned to you here will be a copy of any existing Bitmap held in the cache. As NetworkImageView & Android-BitmapMemoryCache deal with recycling images in the background your reference to the bitmap could randomly be recycled. Therefore a copy is returned. 
 This method will also be called from a background thread and not from the UI thread so be careful!
 
-
 Demo
 -----
 You can download a demo apk [here][6].
@@ -84,7 +84,7 @@ The code in this project is licensed under the Apache Software License 2.0.
 Contributing
 ------------
 
-I'm open to any suggestions and pull requests. 
+I'm open to any suggestions or pull requests.
 
 
 [1]: https://github.com/DarrenMowat/NetworkImageView/issues

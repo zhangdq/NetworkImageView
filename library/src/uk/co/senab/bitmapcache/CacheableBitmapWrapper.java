@@ -124,5 +124,10 @@ public class CacheableBitmapWrapper {
 			mBitmap.recycle();
 		}
 	}
+	
+	@Override
+	public String toString() {
+		return "CacheableBitmapWrapper -> Bitmap Valid: " + hasValidBitmap();
+	}
 
 }

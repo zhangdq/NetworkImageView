@@ -36,6 +36,7 @@ import com.squareup.otto.Subscribe;
 public class ImageLoader {
 
 	private String Tag = "ImageLoader";
+	public static boolean DEBUG = false;
 
 	private static final ImageLoader INSTANCE = new ImageLoader();
 
@@ -73,6 +74,10 @@ public class ImageLoader {
 	public static ImageLoader getInstance() {
 		return INSTANCE;
 	}
+	
+	public static void setDebug(boolean DEBUG) {
+		ImageLoader.DEBUG = DEBUG;
+	}
 
 	@SuppressWarnings("deprecation")
 	public void setup(Context context, int loadingDrawableId, int loadFailedDrawableId) {
@@ -81,6 +86,7 @@ public class ImageLoader {
 		screenWidth = display.getWidth(); // Deprecated, Meh!
 		NetworkImageView.setLoadingDrawableId(loadingDrawableId);
 		NetworkImageView.setLoadingFailedDrawableId(loadFailedDrawableId);
+		if(DEBUG) log("Setup Complete");
 	}
 
 	@Subscribe
@@ -89,16 +95,19 @@ public class ImageLoader {
 			addToActiveDownloads(event.url);
 			addToWaitingViews(event);
 			storageThreadPool.execute(new StorageRunnable(event));
+			if(DEBUG) log("Queued image for load: " + event.url);
 		} else {
 			// This image is already being downloaded
 			// Add the waiting image view
 			addToWaitingViews(event);
+			if(DEBUG) log("Already queued image for load: " + event.url);
 		}
 	}
 
 	@Subscribe
 	public void onPurgeImageView(PurgeImageViewEvent event) {
 		synchronized (waitingViews) {
+			if(DEBUG) log("onPurgeImageView: " + event.viewid);
 			String url = waitingViews.remove(event.viewid);
 			if (!isViewWaitingOnUrl(url)) {
 				// No other views were waiting on the url
@@ -268,6 +277,7 @@ public class ImageLoader {
 	private void addToActiveDownloads(String url) {
 		synchronized (activeDownloads) {
 			activeDownloads.add(url);
+			if(DEBUG) log("Add url to active downloads: " + url);
 		}
 	}
 
@@ -275,6 +285,7 @@ public class ImageLoader {
 		synchronized (activeDownloads) {
 			if (activeDownloads.contains(url)) {
 				activeDownloads.remove(url);
+				if(DEBUG) log("Removed url from active downloads: " + url);
 			}
 		}
 	}
@@ -282,6 +293,7 @@ public class ImageLoader {
 	private void addToWaitingViews(LoadImageEvent event) {
 		synchronized (waitingViews) {
 			waitingViews.put(event.viewid, event.url);
+			if(DEBUG) log("Add view to waiting views: " + event.viewid + " -> " + event.url);
 		}
 	}
 
@@ -300,6 +312,7 @@ public class ImageLoader {
 	}
 
 	private void postImageAvailable(CacheableBitmapWrapper bitmap, LoadImageEvent event) {
+		if(DEBUG) log("ImageAvailableEvent: " + event.url + " -> " + bitmap);
 		ImageBus.getInstance().post(new ImageAvailableEvent(bitmap, event.url));
 	}
 
@@ -460,5 +473,9 @@ public class ImageLoader {
 			stream.close();
 		}
 		return bitmap;
+	}
+	
+	private void log(String msg) {
+		Log.v("ImageLoader", msg);
 	}
 }

@@ -41,14 +41,14 @@ public class NetworkImageView extends CacheableImageView {
 		loadingFailedDrawableId = id;
 	}
 
-	private void register() {
+	public void register() {
 		if (!registered) {
 			ImageBus.getInstance().register(this);
 			registered = true;
 		}
 	}
 
-	private void unregister() {
+	public void unregister() {
 		if (registered) {
 			ImageBus.getInstance().post(new PurgeImageViewEvent(getId()));
 			ImageBus.getInstance().unregister(this);

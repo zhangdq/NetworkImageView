@@ -4,9 +4,11 @@ import uk.co.senab.bitmapcache.BitmapLruCache;
 import uk.co.senab.bitmapcache.CacheableBitmapWrapper;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.darrenmowat.imageloader.library.events.ImageAvailableEvent;
 import com.darrenmowat.imageloader.library.events.LoadImageEvent;
+import com.darrenmowat.imageloader.library.events.PurgeImageViewEvent;
 import com.squareup.otto.Subscribe;
 
 
@@ -76,9 +78,11 @@ public abstract class CallbackNetworkImageView {
 
 	@Subscribe
 	public void onImageAvailable(final ImageAvailableEvent event) {
+		if(ImageLoader.DEBUG)Log.v("CallbackNetworkImageView", "onImageAvailable: " + event.url + " " + event.image);
 		if (url != null && url.equals(event.url)) {
 			if (event.image != null && event.image.hasValidBitmap()) {
-				imageAvailable(event.url, event.image.getBitmap());
+				Bitmap copy = Bitmap.createBitmap(event.image.getBitmap());
+				imageAvailable(event.url, copy);
 			} else {
 				imageAvailable(url, null);
 			}

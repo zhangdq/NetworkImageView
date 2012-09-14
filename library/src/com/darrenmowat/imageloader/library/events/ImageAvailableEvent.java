@@ -10,7 +10,6 @@ public class ImageAvailableEvent {
 	public ImageAvailableEvent(CacheableBitmapWrapper image, String url) {
 		this.image = image;
 		this.url = url;
-		// Log.v("ImageAvailableEvent", url + " is available");
 	}
 
 }
